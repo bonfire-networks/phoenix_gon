@@ -4,8 +4,8 @@ defmodule PhoenixGon.Mixfile do
   def project do
     [
       app: :phoenix_gon,
-      version: "0.4.1",
-      elixir: "~> 1.4",
+      version: "0.4.0",
+      elixir: "~> 1.5",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       description: description(),
