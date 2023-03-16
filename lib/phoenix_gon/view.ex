@@ -84,6 +84,6 @@ defmodule PhoenixGon.View do
     do: value
 
   defp json_library do
-    Application.get_env(:phoenix_gon, :json_library, Poison)
+    Application.get_env(:phoenix_gon, :json_library, Jason)
   end
 end
