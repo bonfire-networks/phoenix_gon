@@ -2,7 +2,7 @@
 /cover
 /deps
 erl_crash.dump
-=======
+
 # The directory Mix will write compiled artifacts to.
 /_build
 
