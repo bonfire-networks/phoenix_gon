@@ -14,9 +14,9 @@ defmodule PhoenixGon.Mixfile do
     ]
   end
 
-  def application do
-    [applications: [:logger]]
-  end
+  # def application do
+  #   [applications: [:logger, :phoenix_html, :plug]]
+  # end
 
   defp description do
     """
@@ -37,9 +37,10 @@ defmodule PhoenixGon.Mixfile do
   defp deps do
     [
       {:ex_doc, ">= 0.0.0", only: :dev},
-      {:jason, "~> 1.1", optional: true},
-      {:phoenix_html, "~> 3.2"},
-      {:plug, "~> 1.10"},
+      {:jason, "~> 1.4", optional: true},
+      {:phoenix_html, "~> 4.2"},
+      {:phoenix_html_helpers, "~> 1.0"},
+      {:plug, "~> 1.17"},
       {:recase, "~> 0.8"}
     ]
   end

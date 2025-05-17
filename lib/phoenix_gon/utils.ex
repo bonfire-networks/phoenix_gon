@@ -2,7 +2,7 @@ defmodule PhoenixGon.Utils do
   @moduledoc """
   Usefull methods for elixir modules
   """
-
+  require Logger 
   @doc """
   Return if mix env dev
   """
@@ -22,19 +22,35 @@ defmodule PhoenixGon.Utils do
   def variables(conn), do: conn.private[:phoenix_gon]
 
   @doc """
-  Retusn elixir assets.
+  Returns elixir assets.
   """
   @spec assets(Plug.Conn.t()) :: Map.t()
-  def assets(conn), do: variables(conn).assets
+  def assets(conn) do
+    case variables(conn) do
+      %{assets: assets} ->
+        assets
+        other ->
+        Logger.warn("Gon assets is not a struct, but #{inspect(other)}")
+        []
+      end
+    end
 
   @doc """
   Returns all elixir settings.
   """
   @spec settings(Plug.Conn.t()) :: List.t()
   def settings(conn) do
-    Enum.filter(Map.from_struct(variables(conn)), fn {key, _} ->
+    case variables(conn) do
+      struct when is_struct(struct) ->
+        
+    Enum.filter(Map.from_struct(struct), fn {key, _} ->
       key != :assets
     end)
+
+    other ->
+      Logger.warn("Gon settings is not a struct, but #{inspect(other)}")
+      []
+    end
   end
 
   @doc false
@@ -48,10 +64,8 @@ defmodule PhoenixGon.Utils do
   def namespace(conn) do
     name = settings(conn, :namespace)
 
-    if name == nil do
-      "Gon"
-    else
+    if not is_nil(name) do
       String.split(to_string(name), ".") |> List.last()
-    end
+    end || "Gon"
   end
 end
