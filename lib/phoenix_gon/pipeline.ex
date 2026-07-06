@@ -32,14 +32,17 @@ defmodule PhoenixGon.Pipeline do
       assets_size = map_size(gon.assets || %{})
 
       cond do
-        is_nil(session_gon) and assets_size == 0 ->
-          conn
-
         assets_size > 0 and conn.status in 300..308 ->
+          # carry the gon across the redirect
           put_session(conn, "phoenix_gon", gon)
 
-        true ->
+        not is_nil(session_gon) ->
+          # consume a gon handed over by a previous redirect
           delete_session(conn, "phoenix_gon")
+
+        true ->
+          # NOTE: no session op otherwise! `delete_session` on a key that was never there still flags the session dirty → a Set-Cookie on EVERY response, which used to mint a session cookie for every guest (GDPR/caching/etc all want guests to be cookieless)
+          conn
       end
     end)
   end
